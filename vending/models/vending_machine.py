@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+import secrets
 
 
 class VendingMachine(models.Model):
@@ -31,6 +32,13 @@ class VendingMachine(models.Model):
         "The machine code must be unique.",
     )
 
+    api_token = fields.Char(
+        string="API Token",
+        copy=False,
+        readonly=True,
+        default=lambda self: secrets.token_urlsafe(32),
+    )
+
     @api.depends("slot_ids")
     def _compute_slot_count(self):
         for machine in self:
@@ -41,6 +49,8 @@ class VendingMachine(models.Model):
 
     def action_mark_offline(self):
         self.write({"state": "offline"})
+
+    
 
 
 class VendingSlot(models.Model):

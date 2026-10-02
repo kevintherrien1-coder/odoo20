@@ -42,6 +42,7 @@ class VendingAPI(http.Controller):
         command = request.env["vending.command"].sudo().search([
             ("machine_id", "=", machine.id),
             ("state", "=", "pending"),
+            ("slot_id.quantity", ">", 0),
         ], order="create_date asc", limit=1)
 
         if not command:

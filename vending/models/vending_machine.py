@@ -62,3 +62,23 @@ class VendingSlot(models.Model):
         "UNIQUE(machine_id, code)",
         "The slot code must be unique per machine.",
     )
+
+
+class VendingSlotDispense(models.Model):
+    _inherit = "vending.slot"
+
+    def action_test_dispense(self):
+        self.ensure_one()
+        command = self.env["vending.command"].create({
+            "machine_id": self.machine_id.id,
+            "slot_id": self.id,
+            "command": "dispense",
+        })
+        return {
+            "type": "ir.actions.act_window",
+            "name": "Vending Command",
+            "res_model": "vending.command",
+            "res_id": command.id,
+            "view_mode": "form",
+            "target": "current",
+        }

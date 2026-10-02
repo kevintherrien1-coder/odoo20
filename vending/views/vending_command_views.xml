@@ -1,0 +1,50 @@
+<odoo>
+    <record id="vending_command_view_list" model="ir.ui.view">
+        <field name="name">vending.command.list</field>
+        <field name="model">vending.command</field>
+        <field name="arch" type="xml">
+            <list string="Vending Commands" decoration-warning="state == 'pending'" decoration-success="state == 'done'" decoration-danger="state == 'failed'">
+                <field name="requested_at"/>
+                <field name="machine_id"/>
+                <field name="slot_id"/>
+                <field name="command"/>
+                <field name="state"/>
+                <field name="completed_at"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="vending_command_view_form" model="ir.ui.view">
+        <field name="name">vending.command.form</field>
+        <field name="model">vending.command</field>
+        <field name="arch" type="xml">
+            <form string="Vending Command">
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="pending,processing,done,failed"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="machine_id"/>
+                            <field name="slot_id"/>
+                            <field name="command"/>
+                        </group>
+                        <group>
+                            <field name="requested_at"/>
+                            <field name="completed_at"/>
+                        </group>
+                    </group>
+                    <group invisible="not error_message">
+                        <field name="error_message"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="vending_command_action" model="ir.actions.act_window">
+        <field name="name">Commands</field>
+        <field name="res_model">vending.command</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

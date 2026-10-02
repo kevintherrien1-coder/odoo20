@@ -52,6 +52,7 @@
                                     <field name="quantity"/>
                                     <field name="gpio_pin"/>
                                     <field name="active"/>
+                                    <button name="action_test_dispense" type="object" string="Test Dispense" class="btn-primary"/>
                                 </list>
                             </field>
                         </page>

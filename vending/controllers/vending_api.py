@@ -73,6 +73,7 @@ class VendingAPI(http.Controller):
         methods=["POST"],
         csrf=False,
     )
+
     def command_done(
         self,
         machine_code=None,
@@ -103,6 +104,20 @@ class VendingAPI(http.Controller):
                 "error": "command_not_found",
             }
 
+        slot = command.slot_id
+
+        if slot.quantity <= 0:
+            return {
+                "success": False,
+                "error": "slot_out_of_stock",
+            }
+
+        # Decrease slot inventory only after successful dispense
+        slot.sudo().write({
+            "quantity": slot.quantity - 1,
+        })
+
+        # Mark command as completed
         command.write({
             "state": "done",
             "completed_at": fields.Datetime.now(),
@@ -110,6 +125,7 @@ class VendingAPI(http.Controller):
 
         return {
             "success": True,
+            "remaining_quantity": slot.quantity,
         }
 
     @http.route(

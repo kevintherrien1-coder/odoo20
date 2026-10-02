@@ -6,7 +6,7 @@
     "license": "LGPL-3",
     "depends": ["base", "product", "stock", "sale_management"],
     "data": [
-        "security/ir.model.access.csv",
+        'security/ir.access.csv',
         "views/vending_machine_views.xml",
         "views/vending_menus.xml",
     ],

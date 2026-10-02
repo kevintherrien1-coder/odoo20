@@ -1,0 +1,4 @@
+<odoo>
+    <menuitem id="vending_menu_root" name="Vending" sequence="35"/>
+    <menuitem id="vending_menu_machines" name="Machines" parent="vending_menu_root" action="vending_machine_action" sequence="10"/>
+</odoo>

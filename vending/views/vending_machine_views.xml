@@ -1,0 +1,87 @@
+<odoo>
+    <record id="vending_machine_view_list" model="ir.ui.view">
+        <field name="name">vending.machine.list</field>
+        <field name="model">vending.machine</field>
+        <field name="arch" type="xml">
+            <list string="Vending Machines" decoration-success="state == 'online'" decoration-muted="state == 'offline'">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="state"/>
+                <field name="slot_count"/>
+                <field name="last_seen"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="vending_machine_view_form" model="ir.ui.view">
+        <field name="name">vending.machine.form</field>
+        <field name="model">vending.machine</field>
+        <field name="arch" type="xml">
+            <form string="Vending Machine">
+                <header>
+                    <button name="action_mark_online" type="object" string="Mark Online" class="btn-primary" invisible="state == 'online'"/>
+                    <button name="action_mark_offline" type="object" string="Mark Offline" invisible="state == 'offline'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="offline,online,maintenance"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="code"/>
+                            <field name="partner_id"/>
+                            <field name="stock_location_id"/>
+                        </group>
+                        <group>
+                            <field name="last_seen"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Slots">
+                            <field name="slot_ids">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="code"/>
+                                    <field name="product_id"/>
+                                    <field name="price"/>
+                                    <field name="capacity"/>
+                                    <field name="quantity"/>
+                                    <field name="gpio_pin"/>
+                                    <field name="active"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Notes">
+                            <field name="notes" placeholder="Prototype notes, installation details, etc."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="vending_machine_view_search" model="ir.ui.view">
+        <field name="name">vending.machine.search</field>
+        <field name="model">vending.machine</field>
+        <field name="arch" type="xml">
+            <search string="Vending Machines">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="partner_id"/>
+                <filter string="Online" name="online" domain="[('state','=','online')]"/>
+                <filter string="Offline" name="offline" domain="[('state','=','offline')]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="vending_machine_action" model="ir.actions.act_window">
+        <field name="name">Machines</field>
+        <field name="res_model">vending.machine</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="vending_machine_view_search"/>
+    </record>
+</odoo>

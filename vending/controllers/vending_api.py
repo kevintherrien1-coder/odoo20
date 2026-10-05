@@ -176,3 +176,33 @@ class VendingAPI(http.Controller):
         return {
             "success": True,
         }
+
+class VendingWebsite(http.Controller):
+
+    @http.route(
+        "/vending/<string:machine_code>",
+        type="http",
+        auth="public",
+        website=True,
+        sitemap=False,
+    )
+    def vending_machine_page(self, machine_code, **kwargs):
+
+        machine = request.env["vending.machine"].sudo().search([
+            ("code", "=", machine_code),
+        ], limit=1)
+
+        if not machine:
+            return request.not_found()
+
+        slots = request.env["vending.slot"].sudo().search([
+            ("machine_id", "=", machine.id),
+        ], order="code asc")
+
+        return request.render(
+            "vending.vending_machine_page",
+            {
+                "machine": machine,
+                "slots": slots,
+            }
+        )

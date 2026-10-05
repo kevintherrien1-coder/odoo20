@@ -2,3 +2,4 @@ id,name,model_id,group_id/id,operation,domain
 access_vending_machine_user,vending.machine user,vending.machine,base.group_user,crud,
 access_vending_slot_user,vending.slot user,vending.slot,base.group_user,crud,
 access_vending_command_user,vending.command user,vending.command,base.group_user,crud,
+access_vending_transaction_user,vending.transaction user,vending.transaction,base.group_user,crud,

@@ -206,3 +206,50 @@ class VendingWebsite(http.Controller):
                 "slots": slots,
             }
         )
+    @http.route(
+        "/vending/<string:machine_code>/buy/<int:slot_id>",
+        type="http",
+        auth="public",
+        website=True,
+        sitemap=False,
+    )
+    def vending_buy(self, machine_code, slot_id, **kwargs):
+
+        machine = request.env["vending.machine"].sudo().search([
+            ("code", "=", machine_code),
+        ], limit=1)
+
+        if not machine:
+            return request.not_found()
+
+        slot = request.env["vending.slot"].sudo().search([
+            ("id", "=", slot_id),
+            ("machine_id", "=", machine.id),
+        ], limit=1)
+
+        if not slot:
+            return request.not_found()
+
+        if slot.quantity <= 0:
+            return request.redirect(
+                f"/vending/{machine.code}"
+            )
+
+        vending_tx = request.env[
+            "vending.transaction"
+        ].sudo().create({
+            "machine_id": machine.id,
+            "slot_id": slot.id,
+            "amount": slot.price,
+            "currency_id": request.env.company.currency_id.id,
+            "state": "draft",
+        })
+
+        return request.render(
+            "vending.vending_payment_page",
+            {
+                "machine": machine,
+                "slot": slot,
+                "vending_tx": vending_tx,
+            }
+        )

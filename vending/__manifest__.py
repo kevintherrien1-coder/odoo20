@@ -4,7 +4,7 @@
     "version": "20.0.1.0.1",
     "category": "Inventory",
     "license": "LGPL-3",
-    "depends": ["base", "product", "stock", "sale_management", "website"],
+    "depends": ["base", "product", "stock", "sale_management", "website", "payment"],
     "data": [
         "security/ir.access.csv",
         "views/vending_machine_views.xml",

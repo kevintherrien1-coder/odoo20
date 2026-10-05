@@ -75,7 +75,11 @@
 
                                         <div class="text-success mb-3">
 
-                                            Disponible
+                                            <a t-att-href="'/vending/%s/buy/%s' % (machine.code, slot.id)"
+                                            class="btn btn-primary btn-lg w-100 mt-3">
+                                                Acheter —
+                                                <t t-esc="'%.2f $' % slot.price"/>
+                                            </a>
 
                                         </div>
 
@@ -127,6 +131,58 @@
 
                     Machine
                     <t t-esc="machine.code"/>
+
+                </div>
+
+            </div>
+
+        </t>
+
+    </template>
+    <template
+        id="vending_payment_page"
+        name="Vending Payment"
+    >
+
+        <t t-call="website.layout">
+
+            <div class="container py-5">
+
+                <div class="row justify-content-center">
+
+                    <div class="col-12 col-md-6">
+
+                        <div class="card shadow-sm">
+
+                            <div class="card-body text-center">
+
+                                <h2>
+                                    <t t-esc="slot.product_id.display_name"/>
+                                </h2>
+
+                                <div class="fs-2 fw-bold my-4">
+                                    <t t-esc="'%.2f $' % vending_tx.amount"/>
+                                </div>
+
+                                <p>
+                                    Machine :
+                                    <t t-esc="machine.name"/>
+                                </p>
+
+                                <p>
+                                    Transaction vending :
+                                    #<t t-esc="vending_tx.id"/>
+                                </p>
+
+                                <div class="alert alert-info mt-4">
+                                    Paiement Stripe à connecter ici.
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
 
                 </div>
 
